@@ -1,0 +1,108 @@
+@font-face {
+    font-family: "Stabillo";
+    src: url("../public/Stabillo.otf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Stabillo Light";
+    src: url("../public/Stabillo Light.otf");
+    font-weight: 200;
+}
+
+nav .navbar-nav a {
+    text-decoration: none; 
+    color: inherit;
+}
+
+nav .navbar-nav a span{
+    font-family: "Stabillo Light", sans-serif;
+    font-size: 23px;
+}
+
+
+body {
+    font-family: "Stabillo Light", sans-serif;
+}
+
+.subtitle{
+    width:80%;
+    text-align:center;
+    margin: auto;
+}
+
+h1{
+    margin-top: 60px;
+}
+.container h2{
+    width: 100%;
+}
+
+.try-it-now-rectangle {
+    width: 165px;
+    height: 55px;
+    border-radius: 72px;
+    box-shadow: 0 0 13.4px 1px #fff;
+    border: solid 3px #fff;
+    font-size: 26px;
+}
+
+.try-it-now-rectangle a {
+    text-decoration: none; 
+    color: inherit;
+}
+
+.pricing-rectangle {
+    width: 255px;
+    height: 430px;
+    flex-grow: 0;
+    margin: 21px 15px 0 0;
+    padding: 16px 0 0;
+    border-radius: 54px;
+    background-image: linear-gradient(to bottom, rgba(217, 217, 217, 0) 0%, rgba(75,83,91) 39%, #c0c0c0);
+  }
+.pricing-value{
+    color: rgb(205, 82, 236);
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.hr-pricing{
+    height:3px;
+    width: 80%;
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 0;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.pricing-name{
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.pricing-plan-list{
+    font-size: 30px;
+    line-height: 1;
+    margin-right: 2;
+}
+.icon{
+    height:30px;
+}
+
+
+footer{
+    font-size: 25px;
+}
+
+footer a {
+    text-decoration: none; 
+    color: inherit;
+
+}
+
+footer .flex-container-footer {
+    display: flex;
+    width: 70%;
+}

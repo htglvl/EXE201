@@ -1,0 +1,75 @@
+@font-face {
+    font-family: "Stabillo";
+    src: url("../static/public/Stabillo.otf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Stabillo";
+    src: url("../static/public/Stabillo Light.otf");
+    font-weight: 300;
+}
+
+nav .navbar-nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+nav .navbar-nav a span {
+    font-family: "Stabillo Light", sans-serif;
+    font-size: 23px;
+}
+
+
+body {
+    font-family: "Stabillo Light", sans-serif;
+}
+
+.image-upload{
+    width:20%
+}
+
+.try-it-now-rectangle {
+    width: 165px;
+    height: 55px;
+    border-radius: 72px;
+    box-shadow: 0 0 13.4px 1px #fff;
+    border: solid 3px #fff;
+    font-size: 26px;
+}
+
+.text-upload{
+    color: rgb(205, 82, 236);
+    font-size: 30px;
+}
+
+.dropdown-language{
+    border-radius: 45px;
+    color: #000;
+    background-color: #fff;
+}
+
+.upload-rectangle {
+    border: dashed 5px #fff;
+}
+
+
+.icon {
+    height: 30px;
+}
+
+
+footer {
+    font-size: 25px;
+}
+
+footer a {
+    text-decoration: none;
+    color: inherit;
+
+}
+
+footer .flex-container-footer {
+    display: flex;
+    width: 70%;
+}

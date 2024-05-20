@@ -1,0 +1,23 @@
+.image-link{
+    text-decoration: none; 
+    color: #fff;
+    font-size: 22px;
+}
+
+.delete-button{
+    border-radius: 40px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.delete-button {
+    margin: 0;
+}
+
+.upload-rectangle {
+    border: dashed 5px #fff;
+}

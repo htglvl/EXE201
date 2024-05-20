@@ -1,0 +1,3 @@
+ultralytics
+manga-ocr
+paddleocr

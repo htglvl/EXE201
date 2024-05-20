@@ -1,0 +1,56 @@
+@font-face {
+    font-family: "Stabillo";
+    src: url("../static/public/Stabillo.otf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Stabillo";
+    src: url("../static/public/Stabillo Light.otf");
+    font-weight: 300;
+}
+
+.input-box{
+    border-radius: 25px;
+}
+
+nav .navbar-nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+nav .navbar-nav a span {
+    font-family: "Stabillo Light", sans-serif;
+    font-size: 23px;
+}
+
+
+body {
+    font-family: "Stabillo Light", sans-serif;
+    min-height: 100vh;
+    
+}
+
+.submit-button{
+    border-radius: 45px;
+}
+
+.icon {
+    height: 30px;
+}
+
+
+footer {
+    font-size: 25px;
+}
+
+footer a {
+    text-decoration: none;
+    color: inherit;
+
+}
+
+footer .flex-container-footer {
+    display: flex;
+    width: 70%;
+}
