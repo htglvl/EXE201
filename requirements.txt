@@ -1,3 +1,9 @@
 flask
 waitress
 werkzeug
+pillow
+ultralytics
+manga-ocr
+paddleocr
+translators
+argostranslate
