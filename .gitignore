@@ -1,0 +1,11 @@
+# Data
+processed/*
+uploads/*
+transflow/checkpoints
+translated.zip
+
+# cache
+**/__pycache__/
+
+# Environment
+exeenv
