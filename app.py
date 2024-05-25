@@ -141,6 +141,6 @@ def clear_folder(folder_path):
 if __name__ == '__main__':
     clear_folder(app.config['UPLOAD_FOLDER'])
     clear_folder(app.config['PROCESSED_FOLDER'])
-    # app.run() 
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=5000)
+    app.run() 
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=5000)

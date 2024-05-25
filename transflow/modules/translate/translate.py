@@ -27,8 +27,8 @@ def translate(args, data):
         ...
         }
     '''
-    print("enter Translate")
-
+    
+    start_time = time.time()
 
     argostranslate.package.update_package_index()
     available_packages = argostranslate.package.get_available_packages()
@@ -65,7 +65,7 @@ def translate(args, data):
         # trans_text = argostranslate.translate.translate(temp_text, 'ja', 'vi')
         temp_text = ""
         trans_list = trans_text.split('\n')
-        print(trans_text)
+        # print(trans_text)
         if len(trans_list) != len(temp_list):
             print('translate wrong', len(trans_list), len(temp_list))
             for key, small_value in value['bubbles'].items():
@@ -76,5 +76,5 @@ def translate(args, data):
             for key, small_value in value['bubbles'].items():
                 small_value['trs_text'] = trans_list[counter]
                 counter += 1
-    print('end translate')
+    print(f"Translation time: {time.time() - start_time:.3f}s")
     return data

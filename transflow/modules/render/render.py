@@ -38,7 +38,7 @@ def pil_word_wrap(image: Image, tbbox_top_left: Tuple, font_pth: str, init_font_
         font = font.font_variant(size=font_size)
         width, height = eval_metrics(mutable_message, font)
         if height > roi_height:
-            font_size -= 0.75  # Reduce pointsize
+            font_size -= 1  # Reduce pointsize
             mutable_message = text  # Restore original text
         elif width > roi_width:
             columns = len(mutable_message)
@@ -51,7 +51,7 @@ def pil_word_wrap(image: Image, tbbox_top_left: Tuple, font_pth: str, init_font_
                 if wrapped_width <= roi_width:
                     break
             if columns < 1:
-                font_size -= 0.75  # Reduce pointsize
+                font_size -= 1  # Reduce pointsize
                 mutable_message = text  # Restore original text
         else:
             break
