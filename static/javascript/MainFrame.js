@@ -18,6 +18,22 @@ let gallery = document.getElementById('gallery');
 
 dropArea.addEventListener('drop', handleDrop, false);
 
+fileElem.addEventListener('change', function() {
+    const button = document.getElementById('translateButton');
+    if (this.files.length > 0) {
+        button.classList.remove('disabled');
+    } else {
+        button.classList.add('disabled');
+    }
+});
+
+document.getElementById('translateButton').addEventListener('click', function() {
+    this.value = "Translating"
+    this.classList.add('disabled');
+    document.getElementById('uploadForm').submit();
+    this.disabled = true;
+});
+
 function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();

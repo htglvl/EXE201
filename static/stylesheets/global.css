@@ -10,6 +10,12 @@
     font-weight: 300;
 }
 
+@font-face {
+    font-family: "Stabillo";
+    src: url("../static/public/Stabillo Italic.otf");
+    font-weight: 300;
+}
+
 body {
     margin: 0;
     line-height: normal;

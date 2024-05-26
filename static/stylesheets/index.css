@@ -10,6 +10,12 @@
     font-weight: 200;
 }
 
+@font-face {
+    font-family: "Stabillo Italic";
+    src: url("../public/Stabillo Italic.otf");
+    font-weight: 200;
+}
+
 nav .navbar-nav a {
     text-decoration: none; 
     color: inherit;
@@ -29,6 +35,11 @@ body {
     width:80%;
     text-align:center;
     margin: auto;
+}
+
+.italic-font{
+    font-family:"Stabillo Italic", sans-serif;
+    font-size: 30px;
 }
 
 h1{
