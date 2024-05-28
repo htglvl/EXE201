@@ -2,6 +2,7 @@ from PIL import Image, ImageFont, ImageDraw
 import cv2
 import numpy as np
 from typing import Tuple, List
+import multiprocessing
 from transflow.modules.render.hyphen_textwrap import wrap as hyphen_wrap
 from transflow.modules.render.textblock import TextBlock
 from transflow.modules.utils import *
@@ -38,7 +39,7 @@ def pil_word_wrap(image: Image, tbbox_top_left: Tuple, font_pth: str, init_font_
         font = font.font_variant(size=font_size)
         width, height = eval_metrics(mutable_message, font)
         if height > roi_height:
-            font_size -= 1  # Reduce pointsize
+            font_size -= 2  # Reduce pointsize
             mutable_message = text  # Restore original text
         elif width > roi_width:
             columns = len(mutable_message)
@@ -51,12 +52,20 @@ def pil_word_wrap(image: Image, tbbox_top_left: Tuple, font_pth: str, init_font_
                 if wrapped_width <= roi_width:
                     break
             if columns < 1:
-                font_size -= 1  # Reduce pointsize
+                font_size -= 2  # Reduce pointsize
                 mutable_message = text  # Restore original text
         else:
             break
 
     return mutable_message, font_size
+
+def core_draw(input_arg):
+    image, tbbox_top_left, translation, font_pth, init_font_size, align, font = input_arg
+    # if not translation or len(translation) == 1:
+    #     return
+    translation, font_size = pil_word_wrap(image, (tbbox_top_left[0], tbbox_top_left[1]), font_pth, init_font_size, translation, tbbox_top_left[2], tbbox_top_left[3], align, 4)
+    font = font.font_variant(size=font_size)
+    return (tbbox_top_left[0], tbbox_top_left[1]), translation, font
 
 def draw_text(image: np.ndarray, coord_list: list, text_list: list, font_pth: str, init_font_size: int, align: str, colour: str):
     image = cv2_to_pil(image)
@@ -64,21 +73,16 @@ def draw_text(image: np.ndarray, coord_list: list, text_list: list, font_pth: st
 
     font = ImageFont.truetype(font_pth, size=init_font_size)
 
-    for i in range(len(coord_list)):
-        x1, y1, width, height = convert_xyxy_to_xywh(coord_list[i])
-        tbbox_top_left = (x1, y1)
+    tbbox_top_left_list = [(x1, y1, width, height) for x1, y1, width, height in map(convert_xyxy_to_xywh, coord_list)]
+    mp_input = [(image, tbbox_top_left_list[i], text_list[i], font_pth, init_font_size, align, font) for i in range(len(tbbox_top_left_list))]
+    pool = multiprocessing.Pool(8)
+    mp_result = pool.map(core_draw, mp_input)
 
-        translation = text_list[i]
-        if not translation or len(translation) == 1:
-            continue
-        
-        translation, font_size = pil_word_wrap(image, tbbox_top_left, font_pth, init_font_size, translation, width, height, align, 4)
-        font = font.font_variant(size=font_size)
-        
-        draw.multiline_text(tbbox_top_left, translation, colour, font, align=align, spacing=1)
+    for i in range(len(mp_result)):
+        draw.multiline_text(mp_result[i][0], mp_result[i][1], colour, mp_result[i][2], align=align, spacing=1)
+    
     image = pil_to_cv2(image)
     return image
-
 def render(args, trs_output: dict):
     start_time = time.time()
     for i in range(len(trs_output)):
