@@ -54,19 +54,20 @@ def segment_text(args, sg_model=None):
         image_rgb = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
         # Loop through each segmentation result
-        for mask in result.masks:
-            # Convert the mask to a binary mask
-            binary_mask = mask.data.cpu().numpy().astype(np.uint8)
-            
-            # Ensure the binary_mask is 2D
-            if binary_mask.ndim == 3:
-                binary_mask = binary_mask.squeeze(0)
-            
-            # Resize the binary mask to match the original image size
-            binary_mask = cv2.resize(binary_mask, (original_image.shape[1], original_image.shape[0]), interpolation=cv2.INTER_NEAREST)
-            
-            # Replace the segment area with white color
-            image_rgb = simple_remove(image_rgb, binary_mask)
+        if result.masks:
+            for mask in result.masks:
+                # Convert the mask to a binary mask
+                binary_mask = mask.data.cpu().numpy().astype(np.uint8)
+                
+                # Ensure the binary_mask is 2D
+                if binary_mask.ndim == 3:
+                    binary_mask = binary_mask.squeeze(0)
+                
+                # Resize the binary mask to match the original image size
+                binary_mask = cv2.resize(binary_mask, (original_image.shape[1], original_image.shape[0]), interpolation=cv2.INTER_NEAREST)
+                
+                # Replace the segment area with white color
+                image_rgb = simple_remove(image_rgb, binary_mask)
         # Save removed text image
         os.makedirs(f'{args.output}/removed', exist_ok=True)
         # Convert the image back to BGR format for OpenCV
