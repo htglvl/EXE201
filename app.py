@@ -8,6 +8,11 @@ from transflow.pipeline import main
 import shutil
 from transflow.modules.utils import *
 from waitress import serve
+from datetime import datetime
+
+now = datetime.now()
+now = now.strftime("%Y%m%d%H%M%S-%f")
+
 
 app = Flask(__name__)
 
@@ -15,9 +20,20 @@ app = Flask(__name__)
 if not os.path.exists("uploads"):
     os.makedirs("uploads")
 
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['PROCESSED_FOLDER'] = 'processed/'
-app.config['ARCHIVED'] = 'archived/'
+
+if not os.path.exists("uploads/{now}"):
+    os.makedirs(f"uploads/{now}")
+
+if not os.path.exists("processed/{now}"):
+    os.makedirs(f"processed/{now}")
+
+upload_path = 'uploads/' + now
+process_path = 'processed/'+now
+archived_path = 'archived/'+ now
+
+app.config['UPLOAD_FOLDER'] = upload_path
+app.config['PROCESSED_FOLDER'] = process_path
+app.config['ARCHIVED'] = archived_path
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -142,6 +158,16 @@ def clear_folder(folder_path):
 if __name__ == '__main__':
     clear_folder(app.config['UPLOAD_FOLDER'])
     clear_folder(app.config['PROCESSED_FOLDER'])
+    #clear 1 day old process folder user and upload folder user
+    for folder in os.listdir('uploads/'):
+        if int(now[:8]) - int(folder[:8]) > 1:
+            print(f'delete {folder}')
+            clear_folder('uploads/' + folder)
+
+    for folder in os.listdir('processed/'):
+        if int(now[:8]) - int(folder[:8]) > 1:
+            print(f'delete {folder}')
+            clear_folder('processed/' + folder)
     app.run() 
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=80)
