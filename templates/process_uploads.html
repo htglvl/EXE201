@@ -66,12 +66,12 @@
                         <div class="carousel-inner">
                             {% for file in files %}
                             <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                <a class="image-link" href="{{ url_for('view_file', filename=file) }}">
-                                    <img src="{{ url_for('view_file', filename=file) }}" class="d-block w-100 upload-rectangle" alt="{{ file }}">
+                                <a class="image-link" href="{{ url_for('view_file', now = now, filename=file) }}">
+                                    <img src="{{ url_for('view_file',now = now, filename=file) }}" class="d-block w-100 upload-rectangle" alt="{{ file }}">
                                 </a>
                                 <div class="text-center py-3">
-                                    <a class ="image-link  d-inline px-3" href="{{ url_for('view_file', filename=file) }}">{{ file }}</a>
-                                    <form action="/delete/{{ file }}" method="post" class="d-inline px-3">
+                                    <a class ="image-link  d-inline px-3" href="{{ url_for('view_file',now = now, filename=file) }}">{{ file }}</a>
+                                    <form action="/delete/{{now}}/{{ file }}" method="post" class="d-inline px-3">
                                         <button class="btn btn-light delete-button btn-sm" type="submit">Delete</button>
                                     </form>
                                 </div>
@@ -92,10 +92,10 @@
 
                     <h2>Options</h2>
 
-                    <form action="/download" method="post" class = "p-3">
+                    <form action="/download/{{now}}" method="post" class = "p-3">
                         <button type="submit" class="btn btn-lg btn-light delete-button">Download</button>
                     </form>
-                    <form action="/delete_upload" method="post" class = "p-3">
+                    <form action="/delete_upload/{{now}}" methaod="post" class = "p-3">
                         <button type="submit" class="btn btn-lg btn-light delete-button">Return to Index</button>
                     </form>
                     <a href="/mainframe" class = "p-3"><button type="button" class="btn btn-lg btn-light delete-button">Upload More Files</button></a>
@@ -112,9 +112,9 @@
         <ul>
             {% for file in files %}
             <li>
-                <a class ="image-link" href="{{ url_for('view_file', filename=file) }}">{{ file }}</a>
-                <img class = "p-3" src="{{ url_for('view_file', filename=file) }}" alt="">
-                <form action="/delete/{{ file }}" method="post" style="display: inline;">
+                <a class ="image-link" href="{{ url_for('view_file',now = now, filename=file) }}">{{ file }}</a>
+                <img class = "p-3" src="{{ url_for('view_file',now = now, filename=file) }}" alt="">
+                <form action="/delete/{{now}}/{{ file }}" method="post" style="display: inline;">
                     <button class="btn btn-lg btn-light delete-button" type="submit">Delete</button>
                 </form>
             </li>
