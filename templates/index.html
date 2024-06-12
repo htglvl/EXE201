@@ -38,9 +38,27 @@
           <li class="nav-item">
             <a class="nav-link px-3" href="#"><span>About us</span></a>
           </li>
-
+          {% if session %}
           <li class="nav-item">
+            <a class="nav-link px-3" href="#"><img src={{picture}} alt="account" id="user-image"
+                style="width:25px;height:25px;border-radius: 50%;"></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link px-3" href="#"><img src="../static/public/default.jpeg" alt="Guess" id="user-image"
+                style="width:25px;height:25px;border-radius: 50%;"></a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link px-3" href="#"><span>Token: {{token_money}}</span></a>
+          </li>
+          <li class="nav-item">
+            {% if session %}
+            <!-- <button type="button" id = "sign-in-button"  onclick="signIn()">Login/Signup</button> -->
+            <a class="nav-link px-3" href="/logout" ><span>Logout</span></a>
+            {% else %}
             <a class="nav-link px-3" href="/login"><span>Login/Signup</span></a>
+            {% endif %}
           </li>
         </ul>
       </div>
@@ -219,12 +237,12 @@
               <div class="col px-n3 item-icon-footer">
                 <a href=""><img src="../static/public/layer-4-11@2x.png" class="icon"></a>
               </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </footer>
-
+  <script src="../static/javascript/index.js"></script>
 </body>
 
 </html>

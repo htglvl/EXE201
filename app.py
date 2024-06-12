@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from werkzeug.utils import secure_filename, safe_join
 import os
+from os import path
 from io import BytesIO
 from glob import glob
 from zipfile import ZipFile
@@ -9,16 +10,34 @@ import shutil
 from transflow.modules.utils import *
 from waitress import serve
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+from authlib.integrations.flask_client import OAuth
+from flask_login import UserMixin #this import should stay here
+import json
 
-now = datetime.now()
-now = now.strftime("%Y%m%d%H%M%S-%f")
 
+trueOnlyOne = 1
+db = SQLAlchemy()
+DB_NAME = "database.db"
 
 app = Flask(__name__)
 
+appConf = {
+}
+
+app.secret_key = appConf.get("FLASK_SECRET")
+oauth = OAuth(app)
+oauth.register("myApp",
+               client_id = appConf.get("OAUTH2_CLIENT_ID"),
+               client_secret = appConf.get("OAUTH2_CLIENT_SECRET"),
+               server_metadata_url = appConf.get("OAUTH2_META_URL"),
+               client_kwargs = {
+                   "scope":"openid profile email"
+               })
+
+
+
 # This is the path to the upload directory
-if not os.path.exists("uploads"):
-    os.makedirs("uploads")
 
 
 # if not os.path.exists("uploads/{now}"):
@@ -31,9 +50,30 @@ if not os.path.exists("uploads"):
 # process_path = 'processed/'+now
 archived_path = 'archived/'
 
-def create_folder_and_update_path():
+# app.config['UPLOAD_FOLDER'] = upload_path
+# app.config['PROCESSED_FOLDER'] = process_path
+app.config['ARCHIVED'] = archived_path
+# These are the extension that we are accepting to be uploaded
+app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+db.init_app(app)
+class User(db.Model, UserMixin):
+    email = db.Column(db.String(150), primary_key = True)
+    image = db.Column(db.String(500))
+    token = db.Column(db.Integer)
+
+with app.app_context():
+    db.create_all()
+
+def get_current_time():
     now = datetime.now()
     now = now.strftime("%Y%m%d%H%M%S-%f")
+    return now
+
+def create_folder_and_update_path():
+    now = get_current_time()
+    if not os.path.exists("uploads"):
+        os.makedirs("uploads")
     if not os.path.exists("uploads/{now}"):
         os.makedirs(f"uploads/{now}")
     if not os.path.exists("processed/{now}"):
@@ -43,14 +83,6 @@ def create_folder_and_update_path():
     archived_path = 'archived/'+ now
     return now, upload_path, process_path
 
-
-
-# app.config['UPLOAD_FOLDER'] = upload_path
-# app.config['PROCESSED_FOLDER'] = process_path
-app.config['ARCHIVED'] = archived_path
-# These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename):
     return '.' in filename and \
@@ -59,28 +91,85 @@ def allowed_file(filename):
 def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION 
     # List all files in the specified folder
     files = os.listdir(folder_path)
-
+    number_of_file = 0
     # # Rename files to cardinal numbers
     for i, filename in enumerate(files):
         _, extension = os.path.splitext(filename)
         new_filename = f"{i + 1}{extension}"
         os.rename(os.path.join(folder_path, filename), os.path.join(folder_path, new_filename))
+        number_of_file = i+1
+    if number_of_file > session["token"]:
+        return
+    else:
+        parser = get_parser()
+        args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now])
+        main(args)
+        session["token"] -= number_of_file
+        if session.get("user"):
+            user = User.query.filter_by(email = session["email"]).first()
+            user.token = session["token"]
+            db.session.commit()
 
-    parser = get_parser()
-    args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now])
-    main(args)
+    
 
 @app.route('/')
 def index():
-    return render_template('index.html') 
+    global trueOnlyOne
+    if trueOnlyOne == 1:
+        trueOnlyOne = 0
+        session["token"] = 5
+    return render_template('index.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token")) 
+
+# @app.route('/', methods = ['POST'])
+# def SignupLogin():
+#     print('enter signuplogin')
+#     data = request.get_json()
+#     print(data)
+#     print('end receive data')
+#     user = User.query.filter_by(email = data.email).first()
+#     if user:
+#         print('logged in')
+#     else:
+#         new_user = User(email = data.name, token = 10)
+#         db.session.add(new_user)
+#         db.session.commit() 
+#         print('created')
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return oauth.myApp.authorize_redirect(redirect_uri = url_for("google_callback", _external = True))
+    # return render_template('login.html')
+
+@app.route("/signin-google")
+def google_callback():
+    token = oauth.myApp.authorize_access_token()
+    session["user"] = token
+    pretty = json.dumps(token,indent=4)
+    data = json.loads(pretty)
+    user_info  = data['userinfo']
+
+    email = user_info['email']
+    session["email"] = email
+    
+    image = user_info['picture']
+    session["picture"] = image
+    
+    user = User.query.filter_by(email = email).first()
+    if user:
+        print('logged in')
+        token_money = user.token
+    else:
+        new_user = User(email = email, image = image, token = 10)
+        token_money  = 10
+        db.session.add(new_user)
+        db.session.commit() 
+        print('created')
+    session["token"] = token_money
+    return redirect(url_for("index"))
 
 @app.route('/mainframe')
 def mainframe():
-    return render_template('MainFrame.html')
+    return render_template('MainFrame.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
 
 @app.route('/mainframe', methods = ['POST'])
 def upload_files():
@@ -100,7 +189,7 @@ def upload_files():
 def process_uploads(now):
     uploaded_files = os.listdir('uploads/' + now)
     # file_count = len(uploaded_files)
-    return render_template('process_uploads.html',now=now, files=uploaded_files)
+    return render_template('process_uploads.html',now=now, files=uploaded_files, session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
 
 @app.route('/delete/<now>/<filename>', methods=['POST'])
 def delete_file(now, filename):
@@ -127,6 +216,15 @@ def download(now):
             for file in files:
                 zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), 'translated.zip'))
     return send_file('translated.zip', as_attachment=True)
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    session.pop("picture", None)
+    session["token"] = 5
+    session.pop("email", None)
+    return redirect(url_for("index"))
 
 @app.route('/delete_upload/<now>', methods=['GET', 'POST'])
 def delete_upload(now):
@@ -170,17 +268,21 @@ def clear_folder(folder_path):
         except Exception as e:
             print(f"Failed to delete {item_path}. Reason: {e}")
 
-if __name__ == '__main__':
-    #clear 1 day old process folder user and upload folder user
+def delete_old_folder_in_upload_and_processed():
     for folder in os.listdir('uploads/'):
         if int(now[:8]) - int(folder[:8]) > 1:
             print(f'delete {folder}')
-            os.rmdir('uploads/'+ folder)
+            shutil.rmtree('uploads/'+ folder, ignore_errors=True)
 
     for folder in os.listdir('processed/'):
         if int(now[:8]) - int(folder[:8]) > 1:
             print(f'delete {folder}')
-            os.rmdir('processed/'+ folder)
-    app.run() 
+            shutil.rmtree('processed/'+ folder, ignore_errors=True)
+
+if __name__ == '__main__':
+    #clear 1 day old process folder user and upload folder user
+    now = get_current_time()
+    delete_old_folder_in_upload_and_processed()
+    app.run(port = appConf.get("FLASK_PORT")) 
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=80)
