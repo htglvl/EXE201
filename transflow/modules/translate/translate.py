@@ -69,8 +69,7 @@ def translate(args, data):
         if len(trans_list) != len(temp_list):
             print('translate wrong', len(trans_list), len(temp_list))
             for key, small_value in value['bubbles'].items():
-                small_value['trs_text'] = small_value['text']
-                counter += 1
+                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'ja', 'vi')
         else:
             counter = 0
             for key, small_value in value['bubbles'].items():
