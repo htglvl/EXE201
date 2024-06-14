@@ -76,3 +76,4 @@ function previewFile(file) {
         gallery.appendChild(img);
     }
 }
+

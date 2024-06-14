@@ -1,6 +1,7 @@
 # Data
 processed/*
 uploads/*
+archived/*
 transflow/checkpoints
 translated.zip
 

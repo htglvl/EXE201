@@ -38,9 +38,27 @@
           <li class="nav-item">
             <a class="nav-link px-3" href="#"><span>About us</span></a>
           </li>
-
+          {% if session %}
           <li class="nav-item">
+            <a class="nav-link px-3" href="#"><img src={{picture}} alt="account" id="user-image"
+                style="width:25px;height:25px;border-radius: 50%;"></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link px-3" href="#"><img src="../static/public/default.jpeg" alt="Guess" id="user-image"
+                style="width:25px;height:25px;border-radius: 50%;"></a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link px-3" href="#"><span>Token: {{token_money}}</span></a>
+          </li>
+          <li class="nav-item">
+            {% if session %}
+            <!-- <button type="button" id = "sign-in-button"  onclick="signIn()">Login/Signup</button> -->
+            <a class="nav-link px-3" href="/logout" ><span>Logout</span></a>
+            {% else %}
             <a class="nav-link px-3" href="/login"><span>Login/Signup</span></a>
+            {% endif %}
           </li>
         </ul>
       </div>
@@ -83,7 +101,7 @@
       <div class="col">
         <div class="pricing-rectangle">
           <h1 class="ps-4 pricing-name">Free</h1>
-          <h1 class="display-4 ps-4 pricing-value">0$</h1>
+          <h1 class="display-4 ps-4 pricing-value">0 vnd</h1>
           <hr class="hr-pricing">
           <ul>
             <li class="pricing-plan-list">5 credits per week</li>
@@ -94,7 +112,7 @@
       <div class="col">
         <div class="pricing-rectangle">
           <h1 class="ps-4 pricing-name">Advanced service</h1>
-          <h1 class="display-4 ps-4 pricing-value">4.99$</h1>
+          <h1 class="display-4 ps-4 pricing-value">850,000 vnd</h1>
           <hr class="hr-pricing">
           <ul class="pricing-plan-list">
             <li class="pricing-plan-list">600 credits one time purchase</li>
@@ -108,7 +126,7 @@
       <div class="col">
         <div class="pricing-rectangle">
           <h1 class="ps-4 pricing-name">Premium service</h1>
-          <h1 class="display-4 ps-4 pricing-value">11.9$</h1>
+          <h1 class="display-4 ps-4 pricing-value">1,600,000 vnd</h1>
           <hr class="hr-pricing">
           <ul>
             <li class="pricing-plan-list">2500 credits one time purchase</li>
@@ -123,7 +141,7 @@
       <div class="col">
         <div class="pricing-rectangle">
           <h1 class="ps-4 pricing-name">Bussiness service</h1>
-          <h1 class="display-4 ps-4 pricing-value">Contact Us</h1>
+          <h1 class="display-4 ps-4 pricing-value">7,000,000 vnd</h1>
           <hr class="hr-pricing">
           <ul>
             <li class="pricing-plan-list">Unlimited credits depend on the user payment</li>
@@ -144,7 +162,7 @@
           <ul class="list-unstyled mb-0">
             <li>
               <a href="#">
-                <img class="logo-icon-footer" loading="lazy" alt="" src="../static/public/logo@2x.png"
+                <img class="logo-icon-footer" loading="lazy" alt="" src="../static/public/logo-11@2x.png"
                   style="width: 50%;" />
               </a>
             </li>
@@ -219,12 +237,12 @@
               <div class="col px-n3 item-icon-footer">
                 <a href=""><img src="../static/public/layer-4-11@2x.png" class="icon"></a>
               </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </footer>
-
+  <script src="../static/javascript/index.js"></script>
 </body>
 
 </html>
