@@ -16,7 +16,6 @@ from flask_login import UserMixin #this import should stay here
 import json
 
 
-trueOnlyOne = 1
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
@@ -114,10 +113,11 @@ def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
 
 @app.route('/')
 def index():
-    global trueOnlyOne
-    if trueOnlyOne == 1:
-        trueOnlyOne = 0
+    if session.get("picture") == None:
         session["token"] = 5
+    else:
+        user = User.query.filter_by(image = session["picture"]).first()
+        session["token"] = user.token
     return render_template('index.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token")) 
 
 # @app.route('/', methods = ['POST'])
@@ -139,6 +139,18 @@ def index():
 def login():
     return oauth.myApp.authorize_redirect(redirect_uri = url_for("google_callback", _external = True))
     # return render_template('login.html')
+
+@app.route('/add-token')
+def addtoken():
+    if session.get("picture"):
+        user = User.query.filter_by(image = session["picture"]).first()
+        amount = request.args.get('amount', type=int)
+        if amount is None:
+            user.token += 5
+        else:
+            user.token += amount
+        db.session.commit()
+    return redirect(url_for("index"))
 
 @app.route("/signin-google")
 def google_callback():
