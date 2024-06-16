@@ -10,3 +10,4 @@ argostranslate
 Flask-SQLAlchemy
 authlib
 flask_login
+gunicorn
