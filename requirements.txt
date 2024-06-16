@@ -7,3 +7,6 @@ manga-ocr
 paddleocr
 translators
 argostranslate
+Flask-SQLAlchemy
+authlib
+flask_login
