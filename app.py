@@ -154,30 +154,33 @@ def addtoken():
 
 @app.route("/signin-google")
 def google_callback():
-    token = oauth.myApp.authorize_access_token()
-    session["user"] = token
-    pretty = json.dumps(token,indent=4)
-    data = json.loads(pretty)
-    user_info  = data['userinfo']
+    try:
+        token = oauth.myApp.authorize_access_token()
+        session["user"] = token
+        pretty = json.dumps(token,indent=4)
+        data = json.loads(pretty)
+        user_info  = data['userinfo']
 
-    email = user_info['email']
-    session["email"] = email
-    
-    image = user_info['picture']
-    session["picture"] = image
-    
-    user = User.query.filter_by(email = email).first()
-    if user:
-        print('logged in')
-        token_money = user.token
-    else:
-        new_user = User(email = email, image = image, token = 10)
-        token_money  = 10
-        db.session.add(new_user)
-        db.session.commit() 
-        print('created')
-    session["token"] = token_money
-    return redirect(url_for("index"))
+        email = user_info['email']
+        session["email"] = email
+        
+        image = user_info['picture']
+        session["picture"] = image
+        
+        user = User.query.filter_by(email = email).first()
+        if user:
+            print('logged in')
+            token_money = user.token
+        else:
+            new_user = User(email = email, image = image, token = 10)
+            token_money  = 10
+            db.session.add(new_user)
+            db.session.commit() 
+            print('created')
+        session["token"] = token_money
+        return redirect(url_for("index"))
+    except:
+        return redirect(url_for("index"))
 
 @app.route('/mainframe')
 def mainframe():
