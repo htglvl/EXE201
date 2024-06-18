@@ -182,6 +182,10 @@ def google_callback():
     except:
         return redirect(url_for("index"))
 
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing_final.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
+
 @app.route('/mainframe')
 def mainframe():
     return render_template('MainFrame.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
