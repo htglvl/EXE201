@@ -43,6 +43,9 @@ def get_parser():
     #argos translator
     parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
+    # Translator options
+    parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
+    
     # OCR options
     parser.add_argument('--ocr-lang', type=str, default='jp', help="language to OCR from ['jp', 'cn', 'kr', 'en']")
     parser.add_argument('--save-ocr-output', action='store_true', help='save output of OCR')
@@ -79,7 +82,7 @@ def get_model(args):
             # model = PaddleOCR(with korea in mind)
             raise NotImplementedError
         elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
-            ocr_model = PaddleOCR(use_angle_cls=True, lang='en', use_gpu=False)
+            ocr_model = PaddleOCR(lang='en', use_gpu=False)
     else:
         print("The language you want have NOT been implemented yet, stay tune for future update")
         raise NotImplementedError
@@ -94,7 +97,8 @@ def crop_image(image, coordinates):
     Return:
         cropped_img(PIL.Image): cropped image
     '''
-    cropped_img = image.crop(coordinates)
+    # cropped_img = image.crop(coordinates)
+    cropped_img = image[coordinates[1]:coordinates[3], coordinates[0]:coordinates[2]]
     return cropped_img
 
 def convert_xyxy_to_xywh(xyxy_box):

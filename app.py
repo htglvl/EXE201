@@ -5,7 +5,7 @@ from os import path
 from io import BytesIO
 from glob import glob
 from zipfile import ZipFile
-from transflow.pipeline import main
+from pipeline import main
 import shutil
 from transflow.modules.utils import *
 from waitress import serve
