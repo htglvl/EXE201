@@ -117,6 +117,8 @@ def index():
         session["token"] = 5
     else:
         user = User.query.filter_by(image = session["picture"]).first()
+        if user == None:
+            return redirect(url_for('logout'))
         session["token"] = user.token
     return render_template('index.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token")) 
 
