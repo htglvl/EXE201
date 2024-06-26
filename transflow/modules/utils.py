@@ -39,6 +39,9 @@ def get_parser():
 
     # YOLO segment options
     parser.add_argument('--sg-weight', type=str, default='transflow/checkpoints/comic-text-segmenter.pt', help='path to pretrained weight')
+
+    #argos translator
+    parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
     # OCR options
     parser.add_argument('--ocr-lang', type=str, default='jp', help="language to OCR from ['jp', 'cn', 'kr', 'en']")

@@ -9,6 +9,9 @@ from typing import Sequence
 from transflow.modules.utils import *
 
 def translate(args, data):
+    # start_language = 'jp'
+    # if args.ocr_lang == 'en' or args.ocr_lang == 'english':
+    #     start_language = 'en'
     '''
     Return:
         {
@@ -49,7 +52,8 @@ def translate(args, data):
     to_lang = list(filter(
         lambda x: x.code == 'vi',
         installed_languages))[0]
-    translation = from_lang.get_translation(to_lang)
+    from_lang.get_translation(to_lang)
+
 
     for key, value in data.items():
         temp_list = []
@@ -74,6 +78,7 @@ def translate(args, data):
             counter = 0
             for key, small_value in value['bubbles'].items():
                 small_value['trs_text'] = trans_list[counter]
+                print(trans_list[counter])
                 counter += 1
     print(f"Translation time: {time.time() - start_time:.3f}s")
     return data

@@ -21,7 +21,8 @@ DB_NAME = "database.db"
 
 app = Flask(__name__)
 
-appConf = {
+appConf = {    
+    
 }
 
 app.secret_key = appConf.get("FLASK_SECRET")
@@ -82,7 +83,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION 
+def rename_files(folder_path, now, language): # IMPLEMENT YOUR OWN PROCESSING FUNCTION 
     # List all files in the specified folder
     files = os.listdir(folder_path)
     number_of_file = 0
@@ -96,7 +97,7 @@ def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
         return
     else:
         parser = get_parser()
-        args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now])
+        args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now, '--ocr-lang', language])
         main(args)
         session["token"] -= number_of_file
         if session.get("user"):
@@ -187,13 +188,15 @@ def mainframe():
 def upload_files():
     now, upload_path, process_path = create_folder_and_update_path()
     files = request.files.getlist("file[]")
+    language = request.form.get("selected_file")
+    print(language)
     for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(upload_path, filename))
 
     # Rename files to cardinal numbers
-    rename_files(upload_path, now)
+    rename_files(upload_path, now, language=language)
     
     return redirect(url_for(f'process_uploads', now=now))
 
