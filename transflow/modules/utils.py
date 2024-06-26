@@ -9,8 +9,8 @@ from PIL import Image
 import cv2
 
 from ultralytics import YOLO
-# import paddleocr
 from manga_ocr import MangaOcr
+from paddleocr import PaddleOCR
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -25,8 +25,8 @@ def get_parser():
     parser.add_argument('--device', type=str, default='cpu', help='device to use (cpu, cuda:0, cuda:1, ...)')
 
     # Render options
-    parser.add_argument('--font-path', type=str,default='transflow/fonts/AndikaNewBasic-B.ttf', help='path to font file')
-    parser.add_argument('--font-size', type=int,default=25, help='init font size')
+    parser.add_argument('--font-path', type=str, help='path to font file')
+    parser.add_argument('--font-size', type=int, help='init font size')
     parser.add_argument('--align', type=str, default='center', help='text alignment: left, center, right')
     parser.add_argument('--colour', type=str, default='#000', help='text colour')
 
@@ -39,9 +39,6 @@ def get_parser():
 
     # YOLO segment options
     parser.add_argument('--sg-weight', type=str, default='transflow/checkpoints/comic-text-segmenter.pt', help='path to pretrained weight')
-
-    #argos translator
-    parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
     # OCR options
     parser.add_argument('--ocr-lang', type=str, default='jp', help="language to OCR from ['jp', 'cn', 'kr', 'en']")
@@ -79,8 +76,7 @@ def get_model(args):
             # model = PaddleOCR(with korea in mind)
             raise NotImplementedError
         elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
-            # model = PaddleOCR(with english in mind)
-            raise NotImplementedError
+            ocr_model = PaddleOCR(use_angle_cls=True, lang='en', use_gpu=False)
     else:
         print("The language you want have NOT been implemented yet, stay tune for future update")
         raise NotImplementedError
@@ -105,3 +101,12 @@ def convert_xyxy_to_xywh(xyxy_box):
     width = x2 - x1
     height = y2 - y1
     return x, y, width, height
+
+def extract_strings(nested):
+    strings = []
+    for item in nested:
+        if isinstance(item, list):
+            strings.extend(extract_strings(item))
+        elif isinstance(item, tuple) and isinstance(item[0], str):
+            strings.append(item[0])
+    return strings

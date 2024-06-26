@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 import pickle
+import numpy as np
 
 from manga_ocr import MangaOcr
 # import paddleocr
@@ -58,7 +59,12 @@ def get_text_from_bubble(args, ocr_model, dt_output):
             bubble_coordinate = bubb_value['coord'] # tuple vd: (1458, 313, 1598, 589)
             bubble_image = crop_image(image=full_image,
                                       coordinates=bubble_coordinate)
-            text = ocr_model(bubble_image)
+            if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
+                text = ocr_model(bubble_image)
+            elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
+                result = ocr_model.ocr(np.asarray(bubble_image), cls=False)
+                extracted_str = extract_strings(result)
+                text = ' '.join(letter for letter in extracted_str) 
             bubb_value['text'] = text
 
     # dump to .pkl

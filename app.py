@@ -27,12 +27,7 @@ appConf = {
 app.secret_key = appConf.get("FLASK_SECRET")
 oauth = OAuth(app)
 oauth.register("myApp",
-               client_id = appConf.get("OAUTH2_CLIENT_ID"),
-               client_secret = appConf.get("OAUTH2_CLIENT_SECRET"),
-               server_metadata_url = appConf.get("OAUTH2_META_URL"),
-               client_kwargs = {
-                   "scope":"openid profile email"
-               })
+)
 
 
 
