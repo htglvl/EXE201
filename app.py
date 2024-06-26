@@ -22,6 +22,11 @@ DB_NAME = "database.db"
 app = Flask(__name__)
 
 appConf = {
+    "OAUTH2_CLIENT_ID":"442704096089-bernp6oal7mdtgdjo175spun3422s0ro.apps.googleusercontent.com",
+    "OAUTH2_CLIENT_SECRET":"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",
+    "OAUTH2_META_URL":"https://accounts.google.com/.well-known/openid-configuration",
+    "FLASK_SECRET":"ef948dd8-561c-4fcb-8db7-41f83185a73b",
+    "FLASK_PORT":8080
 }
 
 app.secret_key = appConf.get("FLASK_SECRET")
