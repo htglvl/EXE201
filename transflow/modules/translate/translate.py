@@ -9,6 +9,9 @@ from typing import Sequence
 from transflow.modules.utils import *
 
 def translate(args, data):
+    # start_language = 'jp'
+    # if args.ocr_lang == 'en' or args.ocr_lang == 'english':
+    #     start_language = 'en'
     '''
     Return:
         {
@@ -49,7 +52,8 @@ def translate(args, data):
     to_lang = list(filter(
         lambda x: x.code == 'vi',
         installed_languages))[0]
-    translation = from_lang.get_translation(to_lang)
+    from_lang.get_translation(to_lang)
+
 
     for key, value in data.items():
         temp_list = []
@@ -62,15 +66,14 @@ def translate(args, data):
         #     trans_text = ts.translate_text(temp_text, translator = "bing", from_language = 'ja', to_language='vi')
         # except:
         #     trans_text = translation.translate(temp_text)
-        print(temp_text)
-        trans_text = argostranslate.translate.translate(temp_text, 'ja', 'vi')
+        trans_text = argostranslate.translate.translate(temp_text, 'en', 'vi')
         temp_text = ""
         trans_list = trans_text.split('\n')
         # print(trans_text)
         if len(trans_list) != len(temp_list):
             print('translate wrong', len(trans_list), len(temp_list))
             for key, small_value in value['bubbles'].items():
-                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'ja', 'vi')
+                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'en', 'vi')
         else:
             counter = 0
             for key, small_value in value['bubbles'].items():

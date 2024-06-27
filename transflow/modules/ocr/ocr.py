@@ -62,7 +62,7 @@ def get_text_from_bubble(args, ocr_model, dt_output):
                                       coordinates=bubble_coordinate)
             if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
                 text = ocr_model(Image.fromarray(bubble_image))
-            elif args.ocr_lang == 'en' or args.ocr_lang == 'english' or args.ocr_lang == 'ch' or args.ocr_lang == 'china':
+            elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
                 result = ocr_model.ocr(bubble_image, cls=False)
                 extracted_str = extract_strings(result)
                 text = ' '.join(letter for letter in extracted_str) 
@@ -83,4 +83,3 @@ def get_text_from_bubble(args, ocr_model, dt_output):
 
 
             
-

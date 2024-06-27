@@ -8,6 +8,12 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="../static/stylesheets/MainFrame.css">
   <link rel="icon" type="image/x-icon" href="../static/public/b90ce1d388b40.ico">
+  <script>
+    function setLanguage(selectObject) {
+      var language = selectObject.value;
+      window.location.href = `/mainframe?language=${language}`;
+    }
+  </script>
   <title>TransFlow</title>
 </head>
 
@@ -79,20 +85,10 @@
   <div class="container mt-5 md-0">
     <div class="row">
       <div class="col">
-        <h3 class="mx-5 px-3">Translate into</h3>
-        <div class="dropdown mx-5 px-3">
-          <button class="btn dropdown-language dropdown-toggle" type="button" id="dropdownMenuButton"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Vietnamese
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Chinese</a>
-            <a class="dropdown-item" href="#">English</a>
-          </div>
-        </div>
+        <h3 class="mx-5 px-3">Translate from</h3>
       </div>
       <div class = "col px-5">
-        <p class = "text-end mx-4 mt-5 h3">Free Plan</p>
+        <p class = "text-end mx-4 h3">Free Plan</p>
       </div>
     </div>
   </div>
@@ -102,6 +98,14 @@
   <div class="container bg-dark">
     <div class="card bg-dark">
       <form action="/mainframe" method="post" enctype="multipart/form-data" class="card-body", id = "upload">
+        <div class="pb-3">
+          <select name = "selected_file" class="form-select mx-5" aria-label="Default select example" style="width:auto;"id="languageSelect">
+            <option selected>Choose your language</option>
+            <option value="jp">Japanese</option>
+            <option value="en">English</option>
+            <option value="cn">Chinese</option>
+          </select>
+        </div>
         <div id="drop-area" class="d-flex justify-content-center align-items-center upload-rectangle mx-5">
           <div class="text-center p-4">
             <img src="../static/public/upload-1@2x.png" alt="" class="image-upload">
@@ -110,9 +114,6 @@
           </div>
         </div>
         <div class="text-center pt-5">
-          <!-- <button type="button" class="btn btn-outline-light try-it-now-rectangle">
-            <p>Translate</p>
-          </button> -->
           <input class = "btn btn-outline-light try-it-now-rectangle disabled" type="submit" value="Translate" id = "translateButton">
         </div>
         <input type="file" id="fileElem" multiple name="file[]" class="d-none">
@@ -120,32 +121,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="text-center">
-    <input class = "btn btn-outline-light try-it-now-rectangle disabled" type="submit" value="Translate" id = "translateButton">
-  </div> -->
-
-
-
-
-
-
-  <!-- <div class="upload-rectangle container">
-      <form action="/mainframe" method="post" enctype="multipart/form-data" class = "text-center h3">
-        Select files to upload:
-        <input type="file" name="file[]" multiple>
-        <input type="submit" value="Translate">
-      </form>
-      <h3>Upload or Drop your images here</h3>
-    </div> -->
-
-  <!-- <button class="demo-button1">
-    <div class="translate">Translate</div>
-  </button> -->
-
-
-
-
 
   <footer class="bg-body-tertiary text-center text-lg-start mt-5" data-bs-theme="dark">
     <div class="container pt-4">

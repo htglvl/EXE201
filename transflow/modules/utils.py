@@ -39,8 +39,8 @@ def get_parser():
 
     # YOLO segment options
     parser.add_argument('--sg-weight', type=str, default='transflow/checkpoints/comic-text-segmenter.pt', help='path to pretrained weight')
-    
-    # Translator options
+
+    #argos translator
     parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
     # OCR options
@@ -65,15 +65,16 @@ def get_model(args):
     sg_model = YOLO(args.sg_weight, task='segment')
 
     # Get OCR model
-    lang_abbrv = ['jp', 'ch', 'kr', 'en']
+    lang_abbrv = ['jp', 'cn', 'kr', 'en']
     lang_full = ['japan', 'china', 'korea', 'english']
 
     # Get model according to the language
     if args.ocr_lang.lower() in lang_abbrv or lang_full:
         if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
             ocr_model = MangaOcr()
-        elif args.ocr_lang == 'ch' or args.ocr_lang == 'china':
-            ocr_model = PaddleOCR(lang='ch', use_gpu=False)
+        elif args.ocr_lang == 'cn' or args.ocr_lang == 'china':
+            # model = PaddleOCR(with china in mind)
+            raise NotImplementedError 
         elif args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
             # model = PaddleOCR(with korea in mind)
             raise NotImplementedError
