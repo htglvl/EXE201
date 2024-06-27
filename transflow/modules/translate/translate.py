@@ -66,14 +66,14 @@ def translate(args, data):
         #     trans_text = ts.translate_text(temp_text, translator = "bing", from_language = 'ja', to_language='vi')
         # except:
         #     trans_text = translation.translate(temp_text)
-        trans_text = argostranslate.translate.translate(temp_text, 'jp', 'vi')
+        trans_text = argostranslate.translate.translate(temp_text, 'en', 'vi')
         temp_text = ""
         trans_list = trans_text.split('\n')
         # print(trans_text)
         if len(trans_list) != len(temp_list):
             print('translate wrong', len(trans_list), len(temp_list))
             for key, small_value in value['bubbles'].items():
-                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'jp', 'vi')
+                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'en', 'vi')
         else:
             counter = 0
             for key, small_value in value['bubbles'].items():
