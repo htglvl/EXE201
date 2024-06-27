@@ -10,12 +10,13 @@ def main(args):
     ocr_model, sg_model = get_model(args)
     sg_output = segment_text(args, sg_model)
     ocr_output = get_text_from_bubble(args, ocr_model, sg_output)
-    trs_output = translate(args, ocr_output)
-    trs_path = args.output + '/output_trs.pkl'
-    render(args, trs_output)
+    print(ocr_output)
+    # trs_output = translate(args, ocr_output)
+    # trs_path = args.output + '/output_trs.pkl'
+    # render(args, trs_output)
 
 
-# if __name__ == '__main__':
-#     parser = get_parser()
-#     args = parser.parse_args()
-#     main(args)
+if __name__ == '__main__':
+    parser = get_parser()
+    args = parser.parse_args()
+    main(args)

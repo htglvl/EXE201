@@ -9,8 +9,8 @@ from PIL import Image
 import cv2
 
 from ultralytics import YOLO
-# import paddleocr
 from manga_ocr import MangaOcr
+from paddleocr import PaddleOCR
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -25,8 +25,8 @@ def get_parser():
     parser.add_argument('--device', type=str, default='cpu', help='device to use (cpu, cuda:0, cuda:1, ...)')
 
     # Render options
-    parser.add_argument('--font-path', type=str,default='transflow/fonts/AndikaNewBasic-B.ttf', help='path to font file')
-    parser.add_argument('--font-size', type=int,default=25, help='init font size')
+    parser.add_argument('--font-path', type=str, help='path to font file')
+    parser.add_argument('--font-size', type=int, help='init font size')
     parser.add_argument('--align', type=str, default='center', help='text alignment: left, center, right')
     parser.add_argument('--colour', type=str, default='#000', help='text colour')
 
@@ -39,8 +39,8 @@ def get_parser():
 
     # YOLO segment options
     parser.add_argument('--sg-weight', type=str, default='transflow/checkpoints/comic-text-segmenter.pt', help='path to pretrained weight')
-
-    #argos translator
+    
+    # Translator options
     parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
     # OCR options
@@ -65,22 +65,20 @@ def get_model(args):
     sg_model = YOLO(args.sg_weight, task='segment')
 
     # Get OCR model
-    lang_abbrv = ['jp', 'cn', 'kr', 'en']
+    lang_abbrv = ['jp', 'ch', 'kr', 'en']
     lang_full = ['japan', 'china', 'korea', 'english']
 
     # Get model according to the language
     if args.ocr_lang.lower() in lang_abbrv or lang_full:
         if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
             ocr_model = MangaOcr()
-        elif args.ocr_lang == 'cn' or args.ocr_lang == 'china':
-            # model = PaddleOCR(with china in mind)
-            raise NotImplementedError 
+        elif args.ocr_lang == 'ch' or args.ocr_lang == 'china':
+            ocr_model = PaddleOCR(lang='ch', use_gpu=False)
         elif args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
             # model = PaddleOCR(with korea in mind)
             raise NotImplementedError
         elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
-            # model = PaddleOCR(with english in mind)
-            raise NotImplementedError
+            ocr_model = PaddleOCR(lang='en', use_gpu=False)
     else:
         print("The language you want have NOT been implemented yet, stay tune for future update")
         raise NotImplementedError
@@ -95,7 +93,8 @@ def crop_image(image, coordinates):
     Return:
         cropped_img(PIL.Image): cropped image
     '''
-    cropped_img = image.crop(coordinates)
+    # cropped_img = image.crop(coordinates)
+    cropped_img = image[coordinates[1]:coordinates[3], coordinates[0]:coordinates[2]]
     return cropped_img
 
 def convert_xyxy_to_xywh(xyxy_box):
@@ -105,3 +104,12 @@ def convert_xyxy_to_xywh(xyxy_box):
     width = x2 - x1
     height = y2 - y1
     return x, y, width, height
+
+def extract_strings(nested):
+    strings = []
+    for item in nested:
+        if isinstance(item, list):
+            strings.extend(extract_strings(item))
+        elif isinstance(item, tuple) and isinstance(item[0], str):
+            strings.append(item[0])
+    return strings
