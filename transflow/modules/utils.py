@@ -43,9 +43,6 @@ def get_parser():
     #argos translator
     parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
     
-    # Translator options
-    parser.add_argument('--argosmodel', type=str, default='transflow/checkpoints/translate-en_vi-1_2.argosmodel', help='path to pretrained weight')
-    
     # OCR options
     parser.add_argument('--ocr-lang', type=str, default='jp', help="language to OCR from ['jp', 'cn', 'kr', 'en']")
     parser.add_argument('--save-ocr-output', action='store_true', help='save output of OCR')

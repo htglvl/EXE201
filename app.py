@@ -5,7 +5,7 @@ from os import path
 from io import BytesIO
 from glob import glob
 from zipfile import ZipFile
-from pipeline import main
+from transflow.pipeline import main
 import shutil
 from transflow.modules.utils import *
 from waitress import serve
@@ -22,7 +22,7 @@ DB_NAME = "database.db"
 app = Flask(__name__)
 
 appConf = {    
-    
+
 }
 
 app.secret_key = appConf.get("FLASK_SECRET")
