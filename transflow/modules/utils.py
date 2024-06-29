@@ -25,8 +25,8 @@ def get_parser():
     parser.add_argument('--device', type=str, default='cpu', help='device to use (cpu, cuda:0, cuda:1, ...)')
 
     # Render options
-    parser.add_argument('--font-path', type=str, help='path to font file')
-    parser.add_argument('--font-size', type=int, help='init font size')
+    parser.add_argument('--font-path', type=str, default='transflow/fonts/AndikaNewBasic-B.ttf', help='path to font file')
+    parser.add_argument('--font-size', type=int, default='50', help='init font size')
     parser.add_argument('--align', type=str, default='center', help='text alignment: left, center, right')
     parser.add_argument('--colour', type=str, default='#000', help='text colour')
 
