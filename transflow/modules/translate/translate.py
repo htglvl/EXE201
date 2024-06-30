@@ -9,9 +9,27 @@ from typing import Sequence
 from transflow.modules.utils import *
 
 def translate(args, data):
-    # start_language = 'jp'
-    # if args.ocr_lang == 'en' or args.ocr_lang == 'english':
-    #     start_language = 'en'
+    start_language = 'jp'
+    argostranslate.package.update_package_index()
+    available_packages = argostranslate.package.get_available_packages()
+    if args.ocr_lang == 'en' or args.ocr_lang == 'english':
+        start_language = 'en'
+        package_path = pathlib.Path(args.argosmodel)
+        argostranslate.package.install_from_path(package_path)
+        installed_languages = argostranslate.translate.get_installed_languages()
+        from_lang = list(filter(lambda x: x.code == 'en',installed_languages))[0]
+        to_lang = list(filter(lambda x: x.code == 'vi',installed_languages))[0]
+    if args.ocr_lang == 'jp' or args.ocr_lang == 'japanese':
+        start_language = 'ja'
+        available_package = list(filter(lambda x: x.from_code == 'ja' and x.to_code == 'en', available_packages))[0]
+        download_path = available_package.download()
+        argostranslate.package.install_from_path(download_path)
+        package_path = pathlib.Path(args.argosmodel)
+        argostranslate.package.install_from_path(package_path)
+        installed_languages = argostranslate.translate.get_installed_languages()
+        from_lang = list(filter(lambda x: x.code == 'ja',installed_languages))[0]
+        to_lang = list(filter(lambda x: x.code == 'vi',installed_languages))[0]
+
     '''
     Return:
         {
@@ -33,8 +51,7 @@ def translate(args, data):
     
     start_time = time.time()
 
-    argostranslate.package.update_package_index()
-    available_packages = argostranslate.package.get_available_packages()
+    
     available_package = list(
     filter(
         lambda x: x.from_code == 'ja' and x.to_code == 'en', available_packages
@@ -66,14 +83,14 @@ def translate(args, data):
         #     trans_text = ts.translate_text(temp_text, translator = "bing", from_language = 'ja', to_language='vi')
         # except:
         #     trans_text = translation.translate(temp_text)
-        trans_text = argostranslate.translate.translate(temp_text, 'en', 'vi')
+        trans_text = argostranslate.translate.translate(temp_text, start_language, 'vi')
         temp_text = ""
         trans_list = trans_text.split('\n')
         # print(trans_text)
         if len(trans_list) != len(temp_list):
             print('translate wrong', len(trans_list), len(temp_list))
             for key, small_value in value['bubbles'].items():
-                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], 'en', 'vi')
+                small_value['trs_text'] = argostranslate.translate.translate(temp_list[key], start_language, 'vi')
         else:
             counter = 0
             for key, small_value in value['bubbles'].items():

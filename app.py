@@ -22,7 +22,6 @@ DB_NAME = "database.db"
 app = Flask(__name__)
 
 appConf = {    
-
 }
 
 app.secret_key = appConf.get("FLASK_SECRET")
