@@ -70,7 +70,7 @@ def core_draw(input_arg):
 def draw_text(image: np.ndarray, coord_list: list, text_list: list, font_pth: str, init_font_size: int, align: str, colour: str):
     image = cv2_to_pil(image)
     draw = ImageDraw.Draw(image)
-
+    print(font_pth)
     font = ImageFont.truetype(font_pth, size=init_font_size)
 
     tbbox_top_left_list = [(x1, y1, width, height) for x1, y1, width, height in map(convert_xyxy_to_xywh, coord_list)]
