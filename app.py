@@ -21,15 +21,19 @@ DB_NAME = "database.db"
 
 app = Flask(__name__)
 
-appConf = {        
+appConf = {
 }
 
 app.secret_key = appConf.get("FLASK_SECRET")
 oauth = OAuth(app)
-oauth.register("myApp",
-)
-
-
+oauth.register(
+    "myApp",
+    client_id = appConf.get("OAUTH2_CLIENT_ID"),
+    client_secret = appConf.get("OAUTH2_CLIENT_SECRET"),
+    server_metadata_url = appConf.get("OAUTH2_META_URL"),
+    client_kwargs = {
+        "scope":"openid profile email"
+    })
 
 # This is the path to the upload directory
 
@@ -82,7 +86,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-def rename_files(folder_path, now, language): # IMPLEMENT YOUR OWN PROCESSING FUNCTION 
+def rename_files(folder_path, now, language): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
     # List all files in the specified folder
     files = os.listdir(folder_path)
     number_of_file = 0
@@ -178,6 +182,10 @@ def google_callback():
         return redirect(url_for("index"))
     except:
         return redirect(url_for("index"))
+
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing_final.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
 
 @app.route('/mainframe')
 def mainframe():
@@ -297,6 +305,6 @@ if __name__ == '__main__':
     #clear 1 day old process folder user and upload folder user
     now = get_current_time()
     delete_old_folder_in_upload_and_processed()
-    app.run(port = appConf.get("FLASK_PORT")) 
+    app.run(port = appConf.get("FLASK_PORT"))
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=80)
