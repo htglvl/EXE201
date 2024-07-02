@@ -73,10 +73,10 @@ def get_model(args):
         if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
             ocr_model = MangaOcr()
         elif args.ocr_lang == 'cn' or args.ocr_lang == 'china':
-            # model = PaddleOCR(with china in mind)
-            raise NotImplementedError 
-        elif args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
             ocr_model = PaddleOCR(lang='ch', use_gpu=False)
+        elif args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
+            # model = PaddleOCR(with korea in mind)
+            raise NotImplementedError 
         elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
             ocr_model = PaddleOCR(lang='en', use_gpu=False)
     else:

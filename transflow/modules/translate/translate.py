@@ -9,6 +9,9 @@ from typing import Sequence
 from transflow.modules.utils import *
 
 def translate(args, data):
+    start_time = time.time()
+
+
     start_language = 'jp'
     argostranslate.package.update_package_index()
     available_packages = argostranslate.package.get_available_packages()
@@ -28,6 +31,26 @@ def translate(args, data):
         argostranslate.package.install_from_path(package_path)
         installed_languages = argostranslate.translate.get_installed_languages()
         from_lang = list(filter(lambda x: x.code == 'ja',installed_languages))[0]
+        to_lang = list(filter(lambda x: x.code == 'vi',installed_languages))[0]
+    if args.ocr_lang == 'cn' or args.ocr_lang == 'chinese':
+        start_language = 'zh'
+        available_package = list(filter(lambda x: x.from_code == 'zh' and x.to_code == 'en', available_packages))[0]
+        download_path = available_package.download()
+        argostranslate.package.install_from_path(download_path)
+        package_path = pathlib.Path(args.argosmodel)
+        argostranslate.package.install_from_path(package_path)
+        installed_languages = argostranslate.translate.get_installed_languages()
+        from_lang = list(filter(lambda x: x.code == 'zh',installed_languages))[0]
+        to_lang = list(filter(lambda x: x.code == 'vi',installed_languages))[0]
+    if args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
+        start_language = 'ko'
+        available_package = list(filter(lambda x: x.from_code == 'ko' and x.to_code == 'en', available_packages))[0]
+        download_path = available_package.download()
+        argostranslate.package.install_from_path(download_path)
+        package_path = pathlib.Path(args.argosmodel)
+        argostranslate.package.install_from_path(package_path)
+        installed_languages = argostranslate.translate.get_installed_languages()
+        from_lang = list(filter(lambda x: x.code == 'ko',installed_languages))[0]
         to_lang = list(filter(lambda x: x.code == 'vi',installed_languages))[0]
 
     '''
@@ -49,26 +72,25 @@ def translate(args, data):
         }
     '''
     
-    start_time = time.time()
 
     
-    available_package = list(
-    filter(
-        lambda x: x.from_code == 'ja' and x.to_code == 'en', available_packages
-        )
-    )[0]
+    # available_package = list(
+    # filter(
+    #     lambda x: x.from_code == 'ja' and x.to_code == 'en', available_packages
+    #     )
+    # )[0]
     
-    download_path = available_package.download()
-    argostranslate.package.install_from_path(download_path)
-    package_path = pathlib.Path(args.argosmodel)
-    argostranslate.package.install_from_path(package_path)
-    installed_languages = argostranslate.translate.get_installed_languages()
-    from_lang = list(filter(
-        lambda x: x.code == 'ja',
-        installed_languages))[0]
-    to_lang = list(filter(
-        lambda x: x.code == 'vi',
-        installed_languages))[0]
+    # download_path = available_package.download()
+    # argostranslate.package.install_from_path(download_path)
+    # package_path = pathlib.Path(args.argosmodel)
+    # argostranslate.package.install_from_path(package_path)
+    # installed_languages = argostranslate.translate.get_installed_languages()
+    # from_lang = list(filter(
+    #     lambda x: x.code == 'ja',
+    #     installed_languages))[0]
+    # to_lang = list(filter(
+    #     lambda x: x.code == 'vi',
+    #     installed_languages))[0]
     from_lang.get_translation(to_lang)
 
 
