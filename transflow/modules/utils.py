@@ -76,8 +76,7 @@ def get_model(args):
             # model = PaddleOCR(with china in mind)
             raise NotImplementedError 
         elif args.ocr_lang == 'kr' or args.ocr_lang == 'korea':
-            # model = PaddleOCR(with korea in mind)
-            raise NotImplementedError
+            ocr_model = PaddleOCR(lang='ch', use_gpu=False)
         elif args.ocr_lang == 'en' or args.ocr_lang == 'english':
             ocr_model = PaddleOCR(lang='en', use_gpu=False)
     else:
