@@ -11,3 +11,6 @@ translated.zip
 # Environment
 exeenv
 .env
+
+#secret
+secretkey/*
