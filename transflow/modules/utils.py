@@ -22,10 +22,10 @@ def get_parser():
     # General options
     parser.add_argument('--image', type=str, help='path to image or image folder')
     parser.add_argument('--output', type=str, default='', help='path to save the output')
-    parser.add_argument('--device', type=str, default='cpu', help='device to use (cpu, cuda:0, cuda:1, ...)')
+    parser.add_argument('--device', type=str, default='cuda:0', help='device to use (cpu, cuda:0, cuda:1, ...)')
 
     # Render options
-    parser.add_argument('--font-path', type=str, default='transflow/fonts/AndikaNewBasic-B.ttf', help='path to font file')
+    parser.add_argument('--font-path', type=str, default='transflow/fonts/AndikaNewBasic-I.ttf', help='path to font file')
     parser.add_argument('--font-size', type=int, default='50', help='init font size')
     parser.add_argument('--align', type=str, default='center', help='text alignment: left, center, right')
     parser.add_argument('--colour', type=str, default='#000', help='text colour')
