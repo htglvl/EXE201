@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/stylesheets/pricing_final.css">
+    <link rel="icon" type="image/x-icon" href="../static/public/b90ce1d388b40.ico">
+    <title>TransFlow</title>
+</head>
+
+
+<body class="text-white bg-dark">
+    <!-- HTML main body part -->
+    <!-- Top page -->
+    <nav class="navbar sticky-top bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img class="logo-icon" loading="lazy" alt="" src="../static/public/logo-11@2x.png"
+                    style="width: 50%;" />
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse nav-options" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/mainframe"> <span>Demo</span> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#"><span>Download</span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/pricing"><span>Pricing</span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#"><span>About us</span></a>
+                    </li>
+                    {% if session %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#"><img src={{picture}} alt="account" id="user-image"
+                                style="width:25px;height:25px;border-radius: 50%;"></a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#"><img src="../static/public/default.jpeg" alt="Guess"
+                                id="user-image" style="width:25px;height:25px;border-radius: 50%;"></a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#"><span>Token: {{token_money}}</span></a>
+                    </li>
+                    <li class="nav-item">
+                        {% if session %}
+                        <!-- <button type="button" id = "sign-in-button"  onclick="signIn()">Login/Signup</button> -->
+                        <a class="nav-link px-3" href="/logout"><span>Logout</span></a>
+                        {% else %}
+                        <a class="nav-link px-3" href="/login"><span>Login/Signup</span></a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Text thing -->
+    <div class="container px-5">
+        <div class="row px-5">
+            <div class="hero-content">
+                <h1 class="display-4 text-center">Choose the
+                    <span class="textGradient">Transflow</span>
+                    plan <b>that's right for you</b>
+                </h1>
+            </div>
+        </div>
+        <!-- Pricing table thing -->
+        <div class="demo">
+            <div class="container">
+                <div class="row d-flex">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div class="pricingTable-header">
+                                <h3 class="heading">Standard</h3>
+                                <span class="price-value">
+                                    FREE
+                                </span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li>10 Credits per week</li>
+                                    <li>Access to most of our service</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div class="pricingTable-header">
+                                <h3 class="heading">Advanced</h3>
+                                <span class="price-value">
+                                    200,000<span class="currency-symbol"> ₫</span>
+                                    <span class="month">/mo</span>
+                                </span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li>300 Credits one time purchase</li>
+                                    <li>20 addtional Credits per week</li>
+                                    <li>Better and faster transition</li>
+                                    <li>Priority support</li>
+                                    <li>Ad-free experience</li>
+                                </ul>
+                                <!-- The QR Modal-->
+                                <button class="read sign-up-button" data-modal="TnCModal2">sign up</button>
+                                <div id="TnCModal2" class="modalBackground">
+                                    <div class="modalContent">
+                                        <span class="closeModalButton">&times;</span>
+                                        <img src="../static/public/200kara.jpeg" alt="The QR for 200k pack" width="500"
+                                            height="500">
+                                        <p class="sthsthText">Nội dung chuyển khoản: Tên User/Email</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div class="pricingTable-header">
+                                <h3 class="heading">Premium</h3>
+                                <span class="price-value">
+                                    500,000<span class="currency-symbol"> ₫</span>
+                                    <span class="month">/mo</span>
+                                </span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li>800 Credits one time purchase</li>
+                                    <li>50 addtional Credits per week</li>
+                                    <li>Better and faster transition</li>
+                                    <li>Priority support</li>
+                                    <li>Editable fonts</li>
+                                    <li>Ad-free experience</li>
+                                </ul>
+                                <!-- The QR Modal-->
+                                <button class="read sign-up-button" data-modal="TnCModal3">sign up</button>
+                                <div id="TnCModal3" class="modalBackground">
+                                    <div class="modalContent">
+                                        <span class="closeModalButton">&times;</span>
+                                        <img src="../static/public/500kara.jpeg" alt="The QR for 500k pack" width="500"
+                                            height="500">
+                                        <p class="sthsthText">Nội dung chuyển khoản: Tên User/Email</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div class="pricingTable-header">
+                                <h3 class="heading">Bussiness</h3>
+                                <span class="price-value">
+                                    1,200,000<span class="currency-symbol"> ₫</span>
+                                    <span class="month">/mo</span>
+                                </span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li>2150 Credits one time purchase</li>
+                                    <li>100 addtional Credits per week</li>
+                                    <li>Better and faster transition</li>
+                                    <li>Priority support</li>
+                                    <li>Editable fonts</li>
+                                    <li>Ad-free experience</li>
+                                </ul>
+                                <!-- The QR Modal-->
+                                <button class="read sign-up-button" data-modal="TnCModal4">sign up</button>
+                                <div id="TnCModal4" class="modalBackground">
+                                    <div class="modalContent">
+                                        <span class="closeModalButton">&times;</span>
+                                        <img src="../static/public/1tr2.jpeg" alt="The QR for 1tr2 pack" width="500"
+                                            height="500">
+                                        <p class="sthsthText">Nội dung chuyển khoản: Tên User/Email</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <footer class="bg-body-tertiary text-center text-lg-start mt-5" data-bs-theme="dark">
+            <div class="container p-4">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">
+                                    <img class="logo-icon-footer" loading="lazy" alt=""
+                                        src="../static/public/logo-11@2x.png" style="width: 50%;" />
+                                </a>
+                            </li>
+                            <li>
+                                <p class="text-body">Copyright © 2024</p>
+                            </li>
+                            <li>
+                                <p class="text-body">Transflow All rights reserved</p>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-body">feedback@transflow.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h3 class="text-uppercase mb-0">Navigation</h3>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="/mainframe" class="text-body">Demo</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-body">Download</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-body">Pricing</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-body">About us</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h3 class="text-uppercase">Legal</h3>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-body">Terms and Conditions</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-body">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <div class="row">
+                            <h3 class="text-uppercase mb-0">Download</h3>
+                            <div class="flex-container-footer">
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/chrome-icon-11@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/pngegg-2-1@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/apple-icon-1@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/pngegg-1-1@2x.png" class="icon"></a>
+                                </div>
+                            </div>
+                            <h3 class="text-uppercase mb-0">Follow Us</h3>
+                            <div class="flex-container-footer">
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/tiktok-icon-11@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/youtube-icon-11@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/facebook-icon-11@2x.png" class="icon"></a>
+                                </div>
+                                <div class="col px-n3 item-icon-footer">
+                                    <a href=""><img src="../static/public/layer-4-11@2x.png" class="icon"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </footer>
+        <script src="../static/javascript/index.js"></script>
+
+        <!-- Javascript part -->
+        <script src="../static/javascript/pricing_final.js">
+        </script>
+</body>
+
+</html>

@@ -1,6 +1,8 @@
 import os
 from PIL import Image
 import pickle
+import numpy as np
+import cv2
 
 from manga_ocr import MangaOcr
 # import paddleocr
@@ -52,13 +54,18 @@ def get_text_from_bubble(args, ocr_model, dt_output):
 
     # Get info from the nested_data
     for k, value in nested_data.items():
-        image_path = value['img']         # relative image path (images should be in a folder and that image folder should be put in the dataset folder [just create the dataset folder in the transflow folder by yourself cuz idk why Khanh not do it])
-        full_image = Image.open(image_path)
+        image_path = value['img']
+        full_image = cv2.imread(image_path)
         for bk, bubb_value in value['bubbles'].items():
             bubble_coordinate = bubb_value['coord'] # tuple vd: (1458, 313, 1598, 589)
             bubble_image = crop_image(image=full_image,
                                       coordinates=bubble_coordinate)
-            text = ocr_model(bubble_image)
+            if args.ocr_lang == 'jp' or args.ocr_lang == 'japan':
+                text = ocr_model(Image.fromarray(bubble_image))
+            elif args.ocr_lang == 'en' or args.ocr_lang == 'english' or args.ocr_lang == 'ch':
+                result = ocr_model.ocr(bubble_image, cls=False)
+                extracted_str = extract_strings(result)
+                text = ' '.join(letter for letter in extracted_str) 
             bubb_value['text'] = text
 
     # dump to .pkl
@@ -76,4 +83,3 @@ def get_text_from_bubble(args, ocr_model, dt_output):
 
 
             
-

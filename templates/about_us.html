@@ -6,22 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/stylesheets/MainFrame.css">
-    <link rel="stylesheet" href="../static/stylesheets/process_uploads.css">
+    <link rel="stylesheet" href="../static/stylesheets/about_us.css">
     <link rel="icon" type="image/x-icon" href="../static/public/b90ce1d388b40.ico">
     <title>TransFlow</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-
 </head>
 
-<body class="text-white bg-dark">
+<body class="text-white bg-dark min-vh-100">
     <nav class="navbar sticky-top bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img class="logo-icon" loading="lazy" alt="" src="../static/public/logo-11@2x.png" style="width: 50%;" />
+                <img class="logo-icon" loading="lazy" alt="" src="../static/public/logo-11@2x.png"
+                    style="width: 50%;" />
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -38,7 +33,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="/pricing"><span>Pricing</span></a>
+                        <a class="nav-link px-3" href="#"><span>Pricing</span></a>
                     </li>
 
                     <li class="nav-item">
@@ -46,112 +41,135 @@
                     </li>
                     {% if session %}
                     <li class="nav-item">
-                      <a class="nav-link px-3" href="#"><img src={{picture}} alt="account" id="user-image"
-                          style="width:25px;height:25px;border-radius: 50%;"></a>
+                        <a class="nav-link px-3" href="#"><img src={{picture}} alt="account" id="user-image"
+                                style="width:25px;height:25px;border-radius: 50%;"></a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                      <a class="nav-link px-3" href="#"><img src="../static/public/default.jpeg" alt="Guess" id="user-image"
-                          style="width:25px;height:25px;border-radius: 50%;"></a>
+                        <a class="nav-link px-3" href="#"><img src="../static/public/default.jpeg" alt="Guess"
+                                id="user-image" style="width:25px;height:25px;border-radius: 50%;"></a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link px-3" href="#"><span>Token: {{token_money}}</span></a>
-                      </li>
+                    </li>
                     <li class="nav-item">
-                      {% if session %}
-                      <!-- <button type="button" id = "sign-in-button"  onclick="signIn()">Login/Signup</button> -->
-                      <a class="nav-link px-3" href="/logout" ><span>Logout</span></a>
-                      {% else %}
-                      <a class="nav-link px-3" href="/login"><span>Login/Signup</span></a>
-                      {% endif %}
+                        {% if session %}
+                        <!-- <button type="button" id = "sign-in-button"  onclick="signIn()">Login/Signup</button> -->
+                        <a class="nav-link px-3" href="/logout"><span>Logout</span></a>
+                        {% else %}
+                        <a class="nav-link px-3" href="/login"><span>Login/Signup</span></a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2>Transflow Translator</h2>
-        <div class="container">
-            <div class = "row">
-                <div class = "col">
-                    <div id="fileCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <!-- <ol class="carousel-indicators">
-                            {% for file in files %}
-                                <li data-target="#carouselExampleIndicators" data-slide-to="{loop.index0}" class="{% if loop.first %}active{% endif %}"></li>
-                            {% endfor %}
-                        </ol> -->
-                        <div class="carousel-inner">
-                            {% for file in files %}
-                            <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                <a class="image-link" href="{{ url_for('view_file', now = now, filename=file) }}">
-                                    <img src="{{ url_for('view_file',now = now, filename=file) }}" class="d-block w-100 upload-rectangle" alt="{{ file }}">
-                                </a>
-                                <div class="text-center py-3">
-                                    <a class ="image-link  d-inline px-3" href="{{ url_for('view_file',now = now, filename=file) }}">{{ file }}</a>
-                                    <form action="/delete/{{now}}/{{ file }}" method="post" class="d-inline px-3">
-                                        <button class="btn btn-light delete-button btn-sm" type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#fileCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#fileCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-                <div class = "col">
-
-                    <h2>Options</h2>
-
-                    <form action="/download/{{now}}" method="post" class = "p-3">
-                        <button type="submit" class="btn btn-lg btn-light delete-button">Download</button>
-                    </form>
-                    <form action="/delete_upload/{{now}}" methaod="post" class = "p-3">
-                        <button type="submit" class="btn btn-lg btn-light delete-button">Return to Index</button>
-                    </form>
-                    <a href="/mainframe" class = "p-3"><button type="button" class="btn btn-lg btn-light delete-button">Upload More Files</button></a>
-                </div>
+    <div class="container py-5">
+        <div class="row h-100 align-items-center py-5">
+            <div class="col-lg-6">
+                <h1 class="display-1">Transflow</h1>
+                <p class="lead display-4 mb-0">The ultimate manga translation</p>
             </div>
-            
+            <div class="col-lg-6 d-none d-lg-block"><img src="https://bootstrapious.com/i/snippets/sn-about/illus.png"
+                    alt="" class="img-fluid"></div>
         </div>
+    </div>
+    </div>
+
+    <div class="row text-center">
+        <!-- Team item-->
+        <div class="col-xl-3 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img
+                    src="https://bootstrapious.com/i/snippets/sn-about/avatar-4.png" alt="" width="100"
+                    class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Dương Minh Hoàng</h5><span class="small text-uppercase text-muted">CEO -
+                    Founder</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End-->
+
+        <!-- Team item-->
+        <div class="col-xl-3 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img
+                    src="https://bootstrapious.com/i/snippets/sn-about/avatar-3.png" alt="" width="100"
+                    class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Samuel Hardy</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End-->
+
+        <!-- Team item-->
+        <div class="col-xl-3 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img
+                    src="https://bootstrapious.com/i/snippets/sn-about/avatar-2.png" alt="" width="100"
+                    class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Tom Sunderland</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End-->
+
+        <!-- Team item-->
+        <div class="col-xl-3 col-sm-6 mb-5">
+            <div class="bg-white rounded shadow-sm py-5 px-4"><img
+                    src="https://bootstrapious.com/i/snippets/sn-about/avatar-1.png" alt="" width="100"
+                    class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">John Tarly</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+                <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End-->
+
+    </div>
+    </div>
+
+    <!-- /END THE FEATURETTES -->
 
     </div>
 
 
-    <!-- <div class="container">
-        <h2>Uploaded Files</h2>
-        <ul>
-            {% for file in files %}
-            <li>
-                <a class ="image-link" href="{{ url_for('view_file',now = now, filename=file) }}">{{ file }}</a>
-                <img class = "p-3" src="{{ url_for('view_file',now = now, filename=file) }}" alt="">
-                <form action="/delete/{{now}}/{{ file }}" method="post" style="display: inline;">
-                    <button class="btn btn-lg btn-light delete-button" type="submit">Delete</button>
-                </form>
-            </li>
-            {% endfor %}
-        </ul>   
-    </div>-->
-
-
 
     <footer class="bg-body-tertiary text-center text-lg-start mt-5" data-bs-theme="dark">
-        <div class="container pt-4">
+        <div class="container p-4">
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                     <ul class="list-unstyled mb-0">
                         <li>
                             <a href="#">
-                                <img class="logo-icon-footer" loading="lazy" alt="" src="../static/public/logo-11@2x.png"
-                                    style="width: 50%;" />
+                                <img class="logo-icon-footer" loading="lazy" alt=""
+                                    src="../static/public/logo-11@2x.png" style="width: 50%;" />
                             </a>
                         </li>
                         <li>
@@ -230,12 +248,6 @@
                 </div>
             </div>
     </footer>
-
-    <!-- Bootstrap JS and Popper.js -->
 </body>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
 
 </html>

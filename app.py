@@ -14,28 +14,26 @@ from flask_sqlalchemy import SQLAlchemy
 from authlib.integrations.flask_client import OAuth
 from flask_login import UserMixin #this import should stay here
 import json
+from secretkey.appconfigsecret import *
 
 
-trueOnlyOne = 1
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
 app = Flask(__name__)
 
-appConf = {
-}
+appConf = appConfsec
 
 app.secret_key = appConf.get("FLASK_SECRET")
 oauth = OAuth(app)
-oauth.register("myApp",
-               client_id = appConf.get("OAUTH2_CLIENT_ID"),
-               client_secret = appConf.get("OAUTH2_CLIENT_SECRET"),
-               server_metadata_url = appConf.get("OAUTH2_META_URL"),
-               client_kwargs = {
-                   "scope":"openid profile email"
-               })
-
-
+oauth.register(
+    "myApp",
+    client_id = appConf.get("OAUTH2_CLIENT_ID"),
+    client_secret = appConf.get("OAUTH2_CLIENT_SECRET"),
+    server_metadata_url = appConf.get("OAUTH2_META_URL"),
+    client_kwargs = {
+        "scope":"openid profile email"
+    })
 
 # This is the path to the upload directory
 
@@ -88,7 +86,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION 
+def rename_files(folder_path, now, language): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
     # List all files in the specified folder
     files = os.listdir(folder_path)
     number_of_file = 0
@@ -102,7 +100,7 @@ def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
         return
     else:
         parser = get_parser()
-        args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now])
+        args = parser.parse_args(['--image', 'uploads/' + now, '--output', 'processed/'+now, '--ocr-lang', language])
         main(args)
         session["token"] -= number_of_file
         if session.get("user"):
@@ -114,10 +112,13 @@ def rename_files(folder_path, now): # IMPLEMENT YOUR OWN PROCESSING FUNCTION
 
 @app.route('/')
 def index():
-    global trueOnlyOne
-    if trueOnlyOne == 1:
-        trueOnlyOne = 0
+    if session.get("picture") == None:
         session["token"] = 5
+    else:
+        user = User.query.filter_by(image = session["picture"]).first()
+        if user == None:
+            return redirect(url_for('logout'))
+        session["token"] = user.token
     return render_template('index.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token")) 
 
 # @app.route('/', methods = ['POST'])
@@ -140,32 +141,51 @@ def login():
     return oauth.myApp.authorize_redirect(redirect_uri = url_for("google_callback", _external = True))
     # return render_template('login.html')
 
+@app.route('/add-token')
+def addtoken():
+    if session.get("picture"):
+        user = User.query.filter_by(image = session["picture"]).first()
+        amount = request.args.get('amount', type=int)
+        if amount is None:
+            user.token += 5
+        else:
+            user.token += amount
+        db.session.commit()
+    return redirect(url_for("index"))
+
 @app.route("/signin-google")
 def google_callback():
-    token = oauth.myApp.authorize_access_token()
-    session["user"] = token
-    pretty = json.dumps(token,indent=4)
-    data = json.loads(pretty)
-    user_info  = data['userinfo']
+    try:
+        token = oauth.myApp.authorize_access_token()
+        session["user"] = token
+        pretty = json.dumps(token,indent=4)
+        data = json.loads(pretty)
+        user_info  = data['userinfo']
 
-    email = user_info['email']
-    session["email"] = email
-    
-    image = user_info['picture']
-    session["picture"] = image
-    
-    user = User.query.filter_by(email = email).first()
-    if user:
-        print('logged in')
-        token_money = user.token
-    else:
-        new_user = User(email = email, image = image, token = 10)
-        token_money  = 10
-        db.session.add(new_user)
-        db.session.commit() 
-        print('created')
-    session["token"] = token_money
-    return redirect(url_for("index"))
+        email = user_info['email']
+        session["email"] = email
+        
+        image = user_info['picture']
+        session["picture"] = image
+        
+        user = User.query.filter_by(email = email).first()
+        if user:
+            print('logged in')
+            token_money = user.token
+        else:
+            new_user = User(email = email, image = image, token = 10)
+            token_money  = 10
+            db.session.add(new_user)
+            db.session.commit() 
+            print('created')
+        session["token"] = token_money
+        return redirect(url_for("index"))
+    except:
+        return redirect(url_for("index"))
+
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing_final.html', session = session.get("user"),picture = session.get("picture"), token_money = session.get("token"))
 
 @app.route('/mainframe')
 def mainframe():
@@ -175,13 +195,15 @@ def mainframe():
 def upload_files():
     now, upload_path, process_path = create_folder_and_update_path()
     files = request.files.getlist("file[]")
+    language = request.form.get("selected_file")
+    print(language)
     for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(upload_path, filename))
 
     # Rename files to cardinal numbers
-    rename_files(upload_path, now)
+    rename_files(upload_path, now, language=language)
     
     return redirect(url_for(f'process_uploads', now=now))
 
@@ -283,6 +305,6 @@ if __name__ == '__main__':
     #clear 1 day old process folder user and upload folder user
     now = get_current_time()
     delete_old_folder_in_upload_and_processed()
-    app.run(port = appConf.get("FLASK_PORT")) 
+    app.run(port = appConf.get("FLASK_PORT"))
     # from waitress import serve
     # serve(app, host="0.0.0.0", port=80)

@@ -1,0 +1,336 @@
+@font-face {
+    font-family: "Stabillo";
+    src: url("../public/Stabillo.otf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Stabillo Light";
+    src: url("../public/Stabillo Light.otf");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Stabillo Italic";
+    src: url("../public/Stabillo Italic.otf");
+    font-weight: 200;
+}
+
+nav .navbar-nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+nav .navbar-nav a span {
+    font-family: "Stabillo Light", sans-serif;
+    font-size: 23px;
+}
+
+
+body {
+    font-family: "Stabillo Light", sans-serif;
+}
+
+.subtitle {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}
+
+.italic-font {
+    font-family: "Stabillo Italic", sans-serif;
+    font-size: 30px;
+}
+
+.icon {
+    height: 30px;
+}
+
+
+footer {
+    font-size: 25px;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+}
+
+footer a {
+    text-decoration: none;
+    color: inherit;
+
+}
+
+footer .flex-container-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+footer .container {
+    max-width: 100%;
+    padding: 0 15px;
+}
+
+.footer-column {
+    flex: 1;
+    padding: 15px;
+}
+
+.sthsthText {
+    font-size: 30px;
+}
+
+/* Pricing table (columns) */
+.pricingTable {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.pricingTable .pricingTable-header {
+    padding: 30px 0;
+    background: #4d4d4d;
+    position: relative;
+    transition: all .3s ease 0s
+}
+
+.pricingTable:hover .pricingTable-header {
+    /* background: #09b2c6 */
+    background: rgb(205, 82, 236);
+}
+
+.pricingTable .pricingTable-header:after,
+.pricingTable .pricingTable-header:before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #d9d9d8;
+    position: absolute;
+    bottom: 12px
+}
+
+.pricingTable .pricingTable-header:before {
+    left: 40px
+}
+
+.pricingTable .pricingTable-header:after {
+    right: 40px
+}
+
+.pricingTable .heading {
+    font-size: 30px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 0
+}
+
+.pricingTable .price-value {
+    display: inline-block;
+    position: relative;
+    font-size: 55px;
+    font-weight: 700;
+    color: rgb(205, 82, 236);
+    transition: all .3s ease 0s
+}
+
+.pricingTable:hover .price-value {
+    color: #fff
+}
+
+.pricingTable .currency {
+    font-size: 30px;
+    font-weight: 700;
+    position: absolute;
+    top: 6px;
+    left: -19px
+}
+
+.pricingTable .month {
+    font-size: 20px;
+    color: #fff;
+    position: absolute;
+    bottom: 15px;
+    right: -30px;
+    text-transform: uppercase
+}
+
+.pricingTable .pricing-content {
+    padding-top: 50px;
+    /* background: #7c7c7c; */
+    background: linear-gradient(to bottom, rgba(217, 217, 217, 0) 0%, rgba(75, 83, 91) 39%, #c0c0c0);
+    position: relative
+}
+
+.pricingTable .pricing-content:after,
+.pricingTable .pricing-content:before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #7c7c7c;
+    position: absolute;
+    top: 12px
+}
+
+.pricingTable .pricing-content:before {
+    left: 40px
+}
+
+.pricingTable .pricing-content:after {
+    right: 40px
+}
+
+.pricingTable .pricing-content ul {
+    padding: 0 20px;
+    margin: 0;
+    list-style: none
+}
+
+.pricingTable .pricing-content ul:after,
+.pricingTable .pricing-content ul:before {
+    content: "";
+    width: 8px;
+    height: 46px;
+    border-radius: 3px;
+    background: linear-gradient(to bottom, #818282 50%, #727373 50%);
+    position: absolute;
+    top: -22px;
+    z-index: 1;
+    box-shadow: 0 0 5px #c5c2c2;
+    transition: all .3s ease 0s
+}
+
+.pricingTable:hover .pricing-content ul:after,
+.pricingTable:hover .pricing-content ul:before {
+    background: linear-gradient(to bottom, rgb(130, 12, 160) 50%, rgb(117, 25, 139) 50%)
+}
+
+.pricingTable .pricing-content ul:before {
+    left: 44px
+}
+
+.pricingTable .pricing-content ul:after {
+    right: 44px
+}
+
+.pricingTable .pricing-content ul li {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    padding: 10px 0;
+    border-bottom: 1px solid #d9d9d8
+}
+
+.pricingTable .pricing-content ul li:last-child {
+    border-bottom: none
+}
+
+.pricingTable .read {
+    display: inline-block;
+    font-size: 25px;
+    color: none;
+    text-transform: uppercase;
+    background: #7c7c7c;
+    border: none;
+    padding: 8px 25px;
+    margin: 30px 0;
+    transition: all .3s ease 0s;
+}
+
+.pricingTable .read:hover {
+    text-decoration: none
+}
+
+.pricingTable:hover .read {
+    background: rgb(205, 82, 236)
+}
+
+.currency-symbol {
+    font-size: 0.5em;
+    vertical-align: middle;
+}
+
+.demo .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pricing-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* .removeButtonBorder {
+    border: none;
+    padding: 0;
+    background: none;
+} */
+
+/* RGB text thing gradient sth sth idk for fun */
+.textGradient {
+    display: inline;
+    color: transparent;
+    background:
+        linear-gradient(319deg, #663dff 0%, #aa00ff 39%, #cc4499 100%) left/50% 100%;
+    background-clip: text;
+    animation: move 3s linear infinite;
+}
+
+@keyframes move {
+    to {
+        background-position: right;
+    }
+}
+
+/* Modal for the Terms and Conditions*/
+.modalBackground {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 100;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Black w/ opacity */
+}
+
+.modalContent {
+    background-color: #ececec;
+    margin: 18% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    height: 60%;
+    width: 60%;
+    color: black;
+    z-index: 1000;
+}
+
+.closeModalButton {
+    color: #000000;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.closeModalButton:hover,
+.closeModalButton:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
